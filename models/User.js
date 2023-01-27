@@ -19,12 +19,6 @@ let UserSchema = new mongoose.Schema(
       trim: true,
       unique: true,
     },
-    // isEmailVerified: { type: Boolean, default: false },
-    // otp: { type: String, default: null },
-    // otpExpires: { type: Date, default: null },
-    // isOtpVerified: { type: Boolean, default: false },
-    // resetPasswordToken: { type: String, default: null },
-
     role: {
       type: Number,
       default: 2, //  2- User
@@ -33,12 +27,12 @@ let UserSchema = new mongoose.Schema(
         2, // 2: User
       ],
     },
-    password: String,
+    password: String
   },
   { timestamps: true }
 );
 UserSchema.methods.setPassword = async function (password) {
-	this.password = bcrypt.hashSync(password, 10)
+  this.password = bcrypt.hashSync(password, 10);
 };
 
 module.exports = mongoose.model("User", UserSchema);

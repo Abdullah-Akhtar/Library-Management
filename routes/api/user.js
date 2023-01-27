@@ -13,9 +13,7 @@ router.post("/addUser", (req, res) => {
     });
     newUser.setPassword(req.body.password);
     newUser.save()
-      .then((result) =>
-        res.status(201).send({ msg: `User created successfully ${newUser}` })
-      )
+      .then((result) => res.status(201).send({ msg: `User created successfully ${newUser}` }))
       .catch((err) => res.status(403).send({ msg: "Something went wrong" }));
   });
 
@@ -23,8 +21,7 @@ router.post("/addUser", (req, res) => {
 ////////Sign In User////////////////
 ///////////////////////////////////
 router.post("/getUser", auth.isEmail, auth.token, (req, res) => {
-    
-    res.send("Working");
+    res.send(req.token);
 });
 
 
