@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Users = require("../../models/User");
+const Orders = require("../../models/Order");
 const auth = require("../../middleware/auth");
 
 /////////////////////////////////////
@@ -34,7 +35,27 @@ router.get("/getUser", auth.isAdmin, (req, res) => {
     } else res.send(err);
   });
 });
+/////////////////////////////////////
+////////Get All User////////////////
+///////////////////////////////////
+router.get("/getAllOrder", auth.isAdmin, (req, res) => {
+  Orders.find({}, (err, names) => {
+    if (!err) {
+      res.send(names);
+    } else res.send(err);
+  });
+});
 
+/////////////////////////////////////
+////////Get All User////////////////
+///////////////////////////////////
+router.get("/getUser", auth.isAdmin, (req, res) => {
+  Users.find({}, (err, names) => {
+    if (!err) {
+      res.send(names);
+    } else res.send(err);
+  });
+});
 /////////////////////////////////////
 ////////Change User information/////
 ///////////////////////////////////
