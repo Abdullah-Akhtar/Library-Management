@@ -3,7 +3,7 @@ const Users = require("../../models/User");
 const auth = require("../../middleware/auth");
 
 /////////////////////////////////////
-////////Adding new User/////////////
+////////Creating new User///////////
 ///////////////////////////////////
 router.post("/addUser", (req, res) => {
   const newUser = new Users({
@@ -68,3 +68,5 @@ router.delete("/delUser", auth.isLogin, (req, res) => {
     if (!err) res.status(200).send({ msg: "User deleted successfully" });
   });
 });
+
+module.exports = router;
