@@ -27,9 +27,19 @@ const isAdmin = (req, res, next) => {
     var decoded = jwt.verify(token, 'abcdf');
     Users.findOne( { email: decoded.foo }, (err, data) => {
         if (err) return res.status(302).send(err);
-        if(!data) return res.status(444).send("You are not an Admin");
+        if(data.role !== 1) return res.status(444).send("You are not an Admin");
         next()
     });
 };
+const isLogin = (req, res, next) => {
+    var token = req.headers['token'];
+    var decoded = jwt.verify(token, 'abcdf');
+    Users.findOne( { email: decoded.foo }, (err, data) => {
+        if (err) return res.status(302).send(err);
+        if(!data) return res.status(444).send("You are not login");
+        req.user = data;
+        next();
+    });
+}
 
-module.exports = { isEmail, token, isAdmin };
+module.exports = { isEmail, token, isAdmin, isLogin};
