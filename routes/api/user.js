@@ -2,27 +2,44 @@ const router = require("express").Router();
 const Users = require("../../models/User");
 const auth = require("../../middleware/auth");
 
-
 /////////////////////////////////////
 ////////Adding new User/////////////
 ///////////////////////////////////
 router.post("/addUser", (req, res) => {
-    const newUser = new Users({
-        username: req.body.username,
-        email: req.body.email,
-    });
-    newUser.setPassword(req.body.password);
-    newUser.save()
-      .then((result) => res.status(201).send({ msg: `User created successfully ${newUser}` }))
-      .catch((err) => res.status(403).send({ msg: "Something went wrong" }));
+  const newUser = new Users({
+    username: req.body.username,
+    email: req.body.email,
   });
+  newUser.setPassword(req.body.password);
+  newUser
+    .save()
+    .then((result) =>
+      res.status(201).send({ msg: `User created successfully ${newUser}` })
+    )
+    .catch((err) => res.status(403).send({ msg: "Something went wrong" }));
+});
 
 /////////////////////////////////////
 ////////Sign In User////////////////
 ///////////////////////////////////
-router.post("/getUser", auth.isEmail, auth.token, (req, res) => {
-    res.send(req.token);
+router.post("/signIn", auth.isEmail, auth.token, (req, res) => {
+  res.send(req.token);
 });
+
+/////////////////////////////////////
+////////Get All User////////////////
+///////////////////////////////////
+router.get("/getUser", auth.isAdmin, (req, res) => {
+  Users.find({}, (err, names) => {
+    if (!err) res.send(names);
+    res.send(err);
+  });
+});
+
+/////////////////////////////////////
+////////Change User information/////
+///////////////////////////////////
+router.put("/book")
 
 
 
