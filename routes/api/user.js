@@ -6,10 +6,8 @@ const auth = require("../../middleware/auth");
 ////////Creating new User///////////
 ///////////////////////////////////
 router.post("/addUser", (req, res) => {
-  const newUser = new Users({
-    username: req.body.username,
-    email: req.body.email,
-  });
+  const newUser = new Users();
+  (newUser.username = req.body.username), (newUser.email = req.body.email);
   newUser.setPassword(req.body.password);
   newUser
     .save()
@@ -41,21 +39,13 @@ router.get("/getUser", auth.isAdmin, (req, res) => {
 ////////Change User information/////
 ///////////////////////////////////
 router.put("/changeinfo", auth.isLogin, (req, res) => {
-  const newData = new Users({
-    email: req.body.email,
-    username: req.body.username,
-  });
-  newData.setPassword(req.body.password);
-  Users.updateOne(
-    { email: req.user.email },
-    {
-      email: newData.email,
-      password: newData.password,
-      username: newData.username,
-    }
-  )
+  req.user.email = req.body.email ? req.body.email : req.user.email;
+  req.user.username = req.body.username ? req.body.username : req.user.username;
+  req.body.password ? req.user.setPassword(req.body.password) : "";
+  req.user
+    .save()
     .then((result) =>
-      res.status(201).send({ msg: `User Updated successfully ${newData}` })
+      res.status(201).send({ msg: `User Updated successfully ${result}` })
     )
     .catch((err) => res.status(403).send({ msg: "Something went wrong" }));
 });
