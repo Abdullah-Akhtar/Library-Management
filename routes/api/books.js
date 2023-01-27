@@ -23,14 +23,21 @@ router.post("/addBook", auth.isAdmin, (req, res) => {
 ////////////updating books//////////////
 ////////////////////////////////////////
 router.post("/updatebook/:search", auth.isAdmin, (req, res) => {
+  Books.findOne(
+    {
+      $or: [{ auther: req.params.search }, { title: req.params.search }],
+    },
+    (err, names) => {}
+  );
   Books.updateOne(
     {
       $or: [{ auther: req.params.search }, { title: req.params.search }],
     },
     {
-      
+      $set: { title: req.body.title },
     },
     (err, names) => {
+      console.log(err, names);
       if (!err & names) {
         res.send(names);
       } else res.send(err);
