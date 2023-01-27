@@ -27,7 +27,7 @@ let UserSchema = new mongoose.Schema(
         2, // 2: User
       ],
     },
-    password: String
+    password: String,
   },
   { timestamps: true }
 );

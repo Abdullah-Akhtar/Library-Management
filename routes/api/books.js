@@ -27,20 +27,24 @@ router.post("/updatebook/:search", auth.isAdmin, (req, res) => {
     {
       $or: [{ auther: req.params.search }, { title: req.params.search }],
     },
-    (err, names) => {}
-  );
-  Books.updateOne(
-    {
-      $or: [{ auther: req.params.search }, { title: req.params.search }],
-    },
-    {
-      $set: { title: req.body.title },
-    },
     (err, names) => {
-      console.log(err, names);
-      if (!err & names) {
-        res.send(names);
-      } else res.send(err);
+      if (!err && names) {
+        console.log(names);
+        names.title = req.body.title ? req.body.title : names.title;
+        names.auther = req.body.auther ? req.body.auther : names.auther;
+        names.price = req.body.price ? req.body.price : names.price;
+        console.log(names);
+        names
+          .save()
+          .then((result) =>
+            res.status(201).send({ msg: `Book Updated successfully ${result}` })
+          )
+          .catch((err) =>
+            res.status(403).send({ msg: "Something went wrong" })
+          );
+      }else if(err || !names ){
+        res.send("Nothing found");
+      }
     }
   );
 });
@@ -71,8 +75,8 @@ router.post("/search", (req, res) => {
       ],
     },
     function (err, names) {
-      if (err) {
-        return res.status(400).send(err);
+      if (err || !names.length) {
+        return res.status(400).send("Nothing Found.");
       }
       return res.send(names);
     }

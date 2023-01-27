@@ -22,7 +22,7 @@ let booksSchema = new mongoose.Schema(
       type: Number,
       required: true,
       default: null,
-    }
+    },
   },
   { timestamps: true }
 );
