@@ -33,10 +33,11 @@ const isAdmin = (req, res, next) => {
 };
 const isLogin = (req, res, next) => {
     var token = req.headers['token'];
+    if(!token) res.send("Please Sign In");
     var decoded = jwt.verify(token, 'abcdf');
     Users.findOne( { email: decoded.foo }, (err, data) => {
         if (err) return res.status(302).send(err);
-        if(!data) return res.status(444).send("You are not login");
+        if(!data) return res.status(444).send("You are not Valid User");
         req.user = data;
         next();
     });

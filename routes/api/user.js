@@ -60,58 +60,11 @@ router.put("/changeinfo", auth.isLogin, (req, res) => {
     .catch((err) => res.status(403).send({ msg: "Something went wrong" }));
 });
 
+/////////////////////////////////////
+////////User Delete/////////////////
+///////////////////////////////////
 router.delete("/delUser", auth.isLogin, (req, res) => {
-  Users.deleteOne({ email: req.params.email }, (err) => {
+  Users.deleteOne({ email: req.user.email }, (err) => {
     if (!err) res.status(200).send({ msg: "User deleted successfully" });
   });
 });
-
-/////////////////////////////////////
-////////get All Users///////////////
-///////////////////////////////////
-// router.get("/get", (req, res) => {
-//   // Then Catch method
-//   // Users.find({}).then(()=>{}).catch((err)=>{})
-//   Users.find({}, function (err, names) {
-//     if (err) {
-//       return res.status(400).send(err);
-//     }
-//     return res.send(names);
-//   });
-// });
-
-////////////////////////////////////////////
-///////////Find User by Email//////////////
-//////////////////////////////////////////
-// router.get("/getUser/:email", (req, res) => {
-//   Users.find({ email: req.params.email }, (err, data) => {
-//     if (!err) res.status(302).send(data);
-//     res.end();
-//   });
-// });
-// /////////////////////////////////////////////
-// ///////////Delete User by Email/////////////
-// ///////////////////////////////////////////
-// router.delete("/deleteUser/:email", (req, res) => {
-//   Users.findOne({ email: req.params.email }, (err, data) => {
-//     if (err || !data) return res.send("Email does not Match");
-//     Users.deleteOne({ email: req.params.email }, (err) => {
-//       if (!err) res.status(200).send({ msg: "User deleted successfully" });
-//     });
-//   });
-// });
-// /////////////////////////////////////////////
-// ///////////Update User by email/////////////
-// ///////////////////////////////////////////
-// router.put("/updateUser/:email", (req, res) => {
-//   Users.updateOne(
-//     { email: req.params.email },
-//     { name: req.body.name, password: req.body.password, email: req.body.email },
-//     (err, result) => {
-//       //   if (!err) res.status(200).send({ msg: "User Updated successfully" });
-//       if (err) return res.status(400).send(err);
-//       return res.status(200).send({ msg: "User Updated successfully" });
-//     }
-//   );
-// });
-module.exports = router;
